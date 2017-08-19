@@ -1,9 +1,6 @@
-# Hello-World
-Another Repository
+# Tic Tac Toe in C#
+
+This is a solution for a tic tac toe game I created in C#. Feel free to make any changes to improve the code and the design.Thought this would be a fun little project to collaborate on!
 
 
-Hi,
 
-My Name is Dylan Young. I'm a student holding an associates degree in Computer Science. I am furthering my education to earn 
-my Bachelors degree in CS. I have a passion or web development and .NET programming. I have experience with C# language and
-SQL Server along with Web-Development languages such as HTML, CSS, and JQuery.
