@@ -1,0 +1,175 @@
+//A game of TicTacToe, using a 2D array
+
+using System;
+
+
+public class TicTacToe
+{
+	private static char[,] board = { { ' ', ' ', ' ' }, { ' ', ' ', ' ' }, { ' ', ' ', ' ' } };
+
+	public static void displayBoard()
+	{
+		Console.Clear(); //clear the console b4 drawing the board
+
+		Console.WriteLine("\n    0   1   2  ");
+
+		for (int row = 0; row < board.GetLength(0); row++)
+		{
+			Console.WriteLine("  -------------");
+			Console.Write(row);
+
+			for (int col = 0; col < board.GetLength(1); col++)
+			{
+				Console.Write(" | " + board[row, col]);
+			}
+			Console.WriteLine(" |");
+		}
+		Console.WriteLine("  -------------\n");
+	}
+
+	public static char checkForWin()
+	{
+		/* 
+         * this method will return t, n, x, or o
+         * returns t for a tie
+         * returns n if game is not over
+         * returns x or o for the winner
+         */
+		char winner = 't';
+
+		if (board[0, 0] != ' ' && board[0, 0] == board[0, 1] && board[0, 0] == board[0, 2]) // check top row
+		{
+			winner = board[0, 0];
+		}
+		else if (board[1, 0] != ' ' && board[1, 0] == board[1, 1] && board[1, 0] == board[1, 2]) // check middle row
+		{
+			winner = board[1, 0];
+		}
+		else if (board[2, 0] != ' ' && board[2, 0] == board[2, 1] && board[2, 0] == board[2, 2]) // check bottom row
+		{
+			winner = board[2, 0];
+		}
+		else if (board[0, 0] != ' ' && board[0, 0] == board[1, 0] && board[0, 0] == board[2, 0]) // check left column
+		{
+			winner = board[0, 0];
+		}
+		else if (board[0, 1] != ' ' && board[0, 1] == board[1, 1] && board[0, 1] == board[2, 1]) // check middle column
+		{
+			winner = board[0, 1];
+		}
+		else if (board[0, 2] != ' ' && board[0, 2] == board[1, 2] && board[0, 2] == board[2, 2]) // check right column
+		{
+			winner = board[0, 2];
+		}
+		else if (board[0, 0] != ' ' && board[0, 0] == board[1, 1] && board[0, 0] == board[2, 2]) // check diagonal
+		{
+			winner = board[0, 0];
+		}
+		else if (board[0, 2] != ' ' && board[0, 2] == board[1, 1] && board[0, 2] == board[2, 0]) // check diagonal
+		{
+			winner = board[0, 2];
+		}
+		else
+		{
+			//check if all positions are filled, i.e a draw
+
+			for (int row = 0; row < board.GetLength(0); row++)
+			{
+				for (int col = 0; col < board.GetLength(1); col++)
+				{
+					if (board[row, col] == ' ')//found open location
+					{
+						return 'n'; //no winner yet
+					}
+				}
+			}
+		}
+
+		return winner;
+	}
+
+	public static void pickPosition(char player)
+	{
+		bool done = false;
+		int row;
+		int col;
+
+		while (!done)//while not done
+		{
+			try
+			{
+				Console.Write("\nPlayer {0}, enter row (0,1,2): ", player);
+				row = Convert.ToInt32(Console.ReadLine());
+
+				Console.Write("\nPlayer {0}, enter column (0,1,2): ", player);
+				col = Convert.ToInt32(Console.ReadLine());
+
+				//set the player on the board
+
+				if (board[row, col] == ' ')//if position is available
+				{
+					board[row, col] = player;
+					done = true; //stop the loop
+				}
+				else
+				{
+					Console.WriteLine("\npoistion {0},{1} is not available", row, col);
+				}
+
+			}
+			catch (FormatException ex)
+			{
+				Console.WriteLine(ex.Message);
+			}
+			catch (IndexOutOfRangeException ex)
+			{
+				Console.WriteLine(ex.Message);
+			}
+
+		}
+	}
+}
+
+public class Program
+{
+	public static void Main(string[] args)
+	{
+		char player_x = 'x';
+		char player_o = 'o';
+		char currentPlayer = player_o;
+		bool gameover = false;
+
+		while (!gameover) //while not game over
+		{
+			//swap current player
+			if (currentPlayer == player_o)
+				currentPlayer = player_x;
+			else
+				currentPlayer = player_o;
+
+			TicTacToe.displayBoard(); //display the board
+			TicTacToe.pickPosition(currentPlayer); //pick position for current player
+			TicTacToe.displayBoard(); //display the board
+
+			//check for win
+			switch (TicTacToe.checkForWin())
+			{
+				case 'x':
+					Console.WriteLine("\nPlayer {0} wins!", player_x);
+					gameover = true; //end game
+					break;
+				case 'o':
+					Console.WriteLine("\nPlayer {0} wins!", player_o);
+					gameover = true; //end game
+					break;
+				case 't':
+					Console.WriteLine("\nIt is a tie!");
+					gameover = true; //end game
+					break;
+			}
+		}
+
+		Console.WriteLine("\nPress any key to close...");
+		Console.ReadKey();
+	}
+}
